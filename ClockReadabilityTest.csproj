@@ -6,8 +6,6 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
-        <PublishAot>true</PublishAot>
-        <StripSymbols>False</StripSymbols>
     </PropertyGroup>
 
 

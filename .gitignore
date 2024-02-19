@@ -1,3 +1,4 @@
-/ClockReadabilityTest/bin
-/ClockReadabilityTest/obj
+bin
+obj
 .idea
+ClockReadabilityTest.sln.DotSettings.user
