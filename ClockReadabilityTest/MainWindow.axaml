@@ -1,0 +1,345 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:a="clr-namespace:ClockReadabilityTest"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ClockReadabilityTest.MainWindow"
+        Width="1320"
+        Height="950"
+        Title="ClockReadabilityTest">
+   
+    <Grid RowDefinitions="Auto,*">
+        <ComboBox SelectedIndex="0" Margin="6" SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+            <Image Width="36" Height="21" Stretch="Fill">
+                <Image.Source>
+                    <SvgImage Source="/Assets/Eng.svg" />
+                </Image.Source>
+            </Image>
+            <Image Width="36" Height="21" Stretch="Fill">
+                <Image.Source>
+                    <SvgImage Source="/Assets/Rus.svg" />
+                </Image.Source>
+            </Image>
+        </ComboBox>
+        <ContentControl Grid.Row="1" Margin="6" Content="{Binding $parent[a:MainWindow].Data}" />
+    </Grid>
+    
+    <Window.DataTemplates>
+        <DataTemplate DataType="a:ViewModel">
+            
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*" Margin="6">
+                
+                <TextBlock Grid.Row="0" Text="{x:Static a:Strings.Description}" Margin="0 0 0 20" TextWrapping="Wrap" />
+                    
+                <WrapPanel Grid.Row="1" Orientation="Horizontal" IsEnabled="{Binding !IsRunning}">
+                    <TextBlock Text="{x:Static a:Strings.TestType}" Margin="6" VerticalAlignment="Center" />
+                    <RadioButton Content="{x:Static a:Strings.Time}" Margin="6" IsChecked="{Binding IsTime}" />
+                    <RadioButton Content="{x:Static a:Strings.Speed}" Margin="6" />
+                    
+                    <Separator Height="NaN" Width="1" />
+                    
+                    <TextBlock Text="{x:Static a:Strings.NumValues}" Margin="6" VerticalAlignment="Center" />
+                    <NumericUpDown Value="{Binding NumValues}" Maximum="8" Minimum="1" ClipValueToMinMax="True" FormatString="N0" VerticalContentAlignment="Center" />
+                    
+                    <Separator Height="NaN" Width="1" />
+                    
+                    <TextBlock Text="{x:Static a:Strings.NumPairs}" Margin="6" VerticalAlignment="Center" />
+                    <NumericUpDown Value="{Binding NumTestPairs}" Minimum="1" Maximum="100" ClipValueToMinMax="True" FormatString="N0" VerticalContentAlignment="Center" />
+                    
+                    <Separator Height="NaN" Width="1" />
+                    
+                    <TextBlock Text="{x:Static a:Strings.CountdownSeconds}" Margin="6" VerticalAlignment="Center" />
+                    <NumericUpDown Value="{Binding CountdownSeconds}" Minimum="1" Maximum="10" ClipValueToMinMax="True" FormatString="N0" VerticalContentAlignment="Center" />
+                    
+                    <Separator Height="NaN" Width="1" />
+
+                    <CheckBox Content="{x:Static a:Strings.Round5}" IsChecked="{Binding Round}" />
+                    
+                </WrapPanel>
+            
+                <WrapPanel Orientation="Horizontal" Grid.Row="2" Margin="0 20">
+                    
+                    <TextBlock Text="{x:Static a:Strings.Zoom}" VerticalAlignment="Center" />
+                    <Slider Minimum="1" Maximum="3" Value="{Binding Zoom, Mode=TwoWay}" Margin="10, 0" Width="100" />
+                    
+                    <Button Content="{x:Static a:Strings.Start}" Command="{Binding Start}" 
+                            IsVisible="{Binding !IsRunning}" />
+                    <Button Content="{x:Static a:Strings.Stop}" Command="{Binding Stop}" 
+                            IsVisible="{Binding IsRunning}" />
+                    
+                    <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" IsVisible="{Binding IsRunning}" Margin="20 0">
+                        <Button Content="{x:Static a:Strings.Ready}" Command="{Binding Ready}"
+                                IsVisible="{Binding IsAsked}" />
+                        <Button Content="{x:Static a:Strings.Next}" Command="{Binding Ready}"
+                                IsVisible="{Binding IsAnswered}" />
+                    </WrapPanel>
+                    
+                    <WrapPanel Orientation="Horizontal" IsVisible="{Binding IsRunning}" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding NumValues, StringFormat={x:Static a:Strings.ChooseHintMultiple}}" IsVisible="{Binding !SingleMode}" VerticalAlignment="Center" />
+                        <TextBlock Text="{x:Static a:Strings.ChooseHintSingle}" IsVisible="{Binding SingleMode}" VerticalAlignment="Center" />
+                    </WrapPanel>
+                    
+                    
+                </WrapPanel>
+                
+                <StackPanel Grid.Row="3" IsVisible="{Binding IsRunning}">
+                    
+                    <TextBlock HorizontalAlignment="Center" FontSize="36" IsVisible="{Binding IsTime}">
+                        <Run Text="{Binding Text1}" />
+                        <Run Text="{x:Static a:Strings.TimeTextFormat}" FontSize="24" />
+                        <Run Text="{Binding Text2}" />
+                        <Run Text="{x:Static a:Strings.TimeTextFormat2}" FontSize="24" />
+                    </TextBlock>
+                    <TextBlock HorizontalAlignment="Center" FontSize="36" IsVisible="{Binding !IsTime}">
+                        <Run Text="{Binding Text1}" />
+                        <Run Text="{x:Static a:Strings.SpeedTextFormat}" FontSize="24" />
+                    </TextBlock>
+
+                    <TextBlock Text="{Binding Countdown, StringFormat={x:Static a:Strings.Countdown}}" FontSize="24"
+                               HorizontalAlignment="Center"
+                               IsVisible="{Binding IsCounting}" />
+
+                    <ItemsControl ItemsSource="{Binding Values}" HorizontalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </StackPanel>
+                <StackPanel Grid.Row="3" IsVisible="{Binding !IsRunning}" Margin="0 20">
+                    <TextBlock Text="{Binding ResultAnalog, StringFormat={x:Static a:Strings.ResultAnalog}}" FontSize="24"
+                               IsVisible="{Binding ResultAnalog, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    <TextBlock Text="{Binding ResultDigital, StringFormat={x:Static a:Strings.ResultDigital}}" FontSize="24"
+                               IsVisible="{Binding ResultDigital, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="a:IndicatorValueItem">
+            <StackPanel Margin="50" Orientation="Vertical">
+                <TextBlock Text="{Binding Key, StringFormat={x:Static a:Strings.KeyHint}}" HorizontalAlignment="Center" FontSize="24" IsVisible="{Binding KeyVisible}" />
+                <Viewbox>
+                    <Viewbox.Width>
+                        <MultiBinding Converter="{a:MultiplyConverter}">
+                            <Binding Source="220" />
+                            <Binding Path="$parent[a:MainWindow].Data.Zoom" />
+                        </MultiBinding>
+                    </Viewbox.Width>
+                    <Viewbox.Height>
+                        <MultiBinding>
+                            <Binding Source="220" />
+                            <Binding Path="$parent[a:MainWindow].Data.Zoom" />
+                        </MultiBinding>
+                    </Viewbox.Height>
+                    <ContentControl Content="{Binding Value}" />
+                </Viewbox>
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate DataType="a:AnalogTime">
+            <Grid>
+                <Rectangle Fill="Firebrick" IsVisible="{Binding IsValueSelectedIncorrect}" />
+                <Rectangle Fill="ForestGreen" IsVisible="{Binding IsValueSelectedCorrect}" />
+                
+                <Canvas Width="200" Height="200" Name="Canvas" Background="{DynamicResource SystemRegionBrush}" Margin="10">
+                    <Canvas.Resources>
+                        <system:Double x:Key="DistanceMultiplier">0.85</system:Double>
+                    </Canvas.Resources>
+                    <Canvas.Styles>
+                        <Style Selector="TemplatedControl.num">
+                            <Setter Property="Width" Value="{Binding #Canvas.Width}" />
+                            <Setter Property="Height" Value="{Binding #Canvas.Height}" />
+                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <Panel Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                        <TextBlock Name="TextBlock" FontSize="21" FontWeight="Bold" Text="{TemplateBinding Tag}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <TextBlock.RenderTransform>
+                                                <TransformGroup>
+                                                    <TranslateTransform>
+                                                        <TranslateTransform.X>
+                                                            <MultiBinding Converter="{a:HalfConverter MultiplyCos}">
+                                                                <Binding Path="#Canvas.Bounds.Width" />
+                                                                <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
+                                                                <DynamicResource ResourceKey="DistanceMultiplier" />
+                                                            </MultiBinding>
+                                                        </TranslateTransform.X>
+                                                        <TranslateTransform.Y>
+                                                            <MultiBinding Converter="{a:HalfConverter MultiplySin}">
+                                                                <Binding Path="#Canvas.Bounds.Height" />
+                                                                <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
+                                                                <DynamicResource ResourceKey="DistanceMultiplier" />
+                                                            </MultiBinding>
+                                                        </TranslateTransform.Y>
+                                                    </TranslateTransform>
+                                                    <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                                        Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                                    <TranslateTransform X="{Binding #TextBlock.Bounds.Width, Converter={a:HalfConverter Inverted}}"
+                                                                        Y="{Binding #TextBlock.Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
+                                                </TransformGroup>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </Panel>
+                                </ControlTemplate>
+                            </Setter>
+                        </Style>
+                    </Canvas.Styles>
+                    
+                    <Ellipse StrokeThickness="3" Stroke="{DynamicResource SystemBaseMediumColor}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                             Width="{Binding #Canvas.Bounds.Width}" Height="{Binding #Canvas.Bounds.Height}" />
+                    
+                    <TemplatedControl Classes="num" Tag="3" a:HalfConverter.Angle="0" />
+                    <TemplatedControl Classes="num" Tag="4" a:HalfConverter.Angle="30" />
+                    <TemplatedControl Classes="num" Tag="5" a:HalfConverter.Angle="60" />
+                    <TemplatedControl Classes="num" Tag="6" a:HalfConverter.Angle="90" />
+                    <TemplatedControl Classes="num" Tag="7" a:HalfConverter.Angle="120" />
+                    <TemplatedControl Classes="num" Tag="8" a:HalfConverter.Angle="150" />
+                    <TemplatedControl Classes="num" Tag="9" a:HalfConverter.Angle="180" />
+                    <TemplatedControl Classes="num" Tag="10" a:HalfConverter.Angle="210" />
+                    <TemplatedControl Classes="num" Tag="11" a:HalfConverter.Angle="240" />
+                    <TemplatedControl Classes="num" Tag="12" a:HalfConverter.Angle="270" />
+                    <TemplatedControl Classes="num" Tag="1" a:HalfConverter.Angle="300" />
+                    <TemplatedControl Classes="num" Tag="2" a:HalfConverter.Angle="330" />
+                    
+                    
+                    <Line StrokeThickness="4" Stroke="{DynamicResource SystemBaseHighColor}" StartPoint="0,0" EndPoint="0,-80" StrokeLineCap="Round">
+                        <Line.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding MinuteAngle}" />
+                                <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                    Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                <TranslateTransform X="{Binding $parent[Line].Bounds.Width, Converter={a:HalfConverter Inverted}}"
+                                                    Y="{Binding $parent[Line].Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
+                            </TransformGroup>
+                        </Line.RenderTransform>
+                    </Line>
+                    
+                    <Line StrokeThickness="8" Stroke="{DynamicResource SystemBaseMediumHighColor}" StartPoint="0,0" EndPoint="0,-55" StrokeLineCap="Round">
+                        <Line.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding HourAngle}" />
+                                <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                    Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                <TranslateTransform X="{Binding $parent[Line].Bounds.Width, Converter={a:HalfConverter Inverted}}"
+                                                    Y="{Binding $parent[Line].Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
+                            </TransformGroup>
+                        </Line.RenderTransform>
+                    </Line>
+                </Canvas>
+                
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="a:DigitalTime">
+            <Panel>
+                <Rectangle Fill="Firebrick" IsVisible="{Binding IsValueSelectedIncorrect}" />
+                <Rectangle Fill="ForestGreen" IsVisible="{Binding IsValueSelectedCorrect}" />
+
+                <Grid Width="200" Height="200" Background="{DynamicResource SystemRegionBrush}" Margin="10">
+                    <TextBlock Text="{Binding TimeString}" FontSize="72" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </Panel>
+        </DataTemplate>
+        
+        <DataTemplate DataType="a:AnalogSpeed">
+            <Panel>
+                <Rectangle Fill="Firebrick" IsVisible="{Binding IsValueSelectedIncorrect}" />
+                <Rectangle Fill="ForestGreen" IsVisible="{Binding IsValueSelectedCorrect}" />
+
+                <Canvas Width="200" Height="200" Name="Canvas" Background="{DynamicResource SystemRegionBrush}" Margin="10">
+                    <Canvas.Resources>
+                        <system:Double x:Key="DistanceMultiplier">0.85</system:Double>
+                    </Canvas.Resources>
+                    <Canvas.Styles>
+                        <Style Selector="TemplatedControl.num">
+                            <Setter Property="Width" Value="{Binding #Canvas.Width}" />
+                            <Setter Property="Height" Value="{Binding #Canvas.Height}" />
+                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <Panel Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                                        <TextBlock Name="TextBlock" FontSize="14" FontWeight="Normal" Text="{TemplateBinding Tag}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <TextBlock.RenderTransform>
+                                                <TransformGroup>
+                                                    <TranslateTransform>
+                                                        <TranslateTransform.X>
+                                                            <MultiBinding Converter="{a:HalfConverter MultiplyCos}">
+                                                                <Binding Path="#Canvas.Bounds.Width" />
+                                                                <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
+                                                                <DynamicResource ResourceKey="DistanceMultiplier" />
+                                                            </MultiBinding>
+                                                        </TranslateTransform.X>
+                                                        <TranslateTransform.Y>
+                                                            <MultiBinding Converter="{a:HalfConverter MultiplySin}">
+                                                                <Binding Path="#Canvas.Bounds.Height" />
+                                                                <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
+                                                                <DynamicResource ResourceKey="DistanceMultiplier" />
+                                                            </MultiBinding>
+                                                        </TranslateTransform.Y>
+                                                    </TranslateTransform>
+                                                    <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                                        Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                                    <TranslateTransform X="{Binding #TextBlock.Bounds.Width, Converter={a:HalfConverter Inverted}}"
+                                                                        Y="{Binding #TextBlock.Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
+                                                </TransformGroup>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </Panel>
+                                </ControlTemplate>
+                            </Setter>
+                        </Style>
+                    </Canvas.Styles>
+                    
+                    <Ellipse StrokeThickness="3" Stroke="{DynamicResource SystemBaseMediumColor}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                             Width="{Binding #Canvas.Bounds.Width}" Height="{Binding #Canvas.Bounds.Height}" />
+                    
+                    <TemplatedControl Classes="num" Tag="0" a:HalfConverter.Angle="130" />
+                    <TemplatedControl Classes="num" Tag="20" a:HalfConverter.Angle="150" />
+                    <TemplatedControl Classes="num" Tag="40" a:HalfConverter.Angle="170" />
+                    <TemplatedControl Classes="num" Tag="60" a:HalfConverter.Angle="190" />
+                    <TemplatedControl Classes="num" Tag="80" a:HalfConverter.Angle="210" />
+                    <TemplatedControl Classes="num" Tag="100" a:HalfConverter.Angle="230" />
+                    <TemplatedControl Classes="num" Tag="120" a:HalfConverter.Angle="250" />
+                    <TemplatedControl Classes="num" Tag="140" a:HalfConverter.Angle="270" />
+                    <TemplatedControl Classes="num" Tag="160" a:HalfConverter.Angle="290" />
+                    <TemplatedControl Classes="num" Tag="180" a:HalfConverter.Angle="310" />
+                    <TemplatedControl Classes="num" Tag="200" a:HalfConverter.Angle="330" />
+                    <TemplatedControl Classes="num" Tag="220" a:HalfConverter.Angle="350" />
+                    <TemplatedControl Classes="num" Tag="240" a:HalfConverter.Angle="10" />
+                    <TemplatedControl Classes="num" Tag="260" a:HalfConverter.Angle="30" />
+                    <TemplatedControl Classes="num" Tag="280" a:HalfConverter.Angle="50" />
+                    
+                    
+                    <Line StrokeThickness="4" Stroke="{DynamicResource SystemBaseHighColor}" StartPoint="0,0" EndPoint="0,-80" StrokeLineCap="Round">
+                        <Line.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="{Binding Angle}" />
+                                <RotateTransform Angle="220" />
+                                <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                    Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                <TranslateTransform X="{Binding $parent[Line].Bounds.Width, Converter={a:HalfConverter Inverted}}"
+                                                    Y="{Binding $parent[Line].Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
+                            </TransformGroup>
+                        </Line.RenderTransform>
+                    </Line>
+                </Canvas>
+            </Panel>
+        </DataTemplate>
+        
+        <DataTemplate DataType="a:DigitalSpeed">
+            <Panel>
+                <Rectangle Fill="Firebrick" IsVisible="{Binding IsValueSelectedIncorrect}" />
+                <Rectangle Fill="ForestGreen" IsVisible="{Binding IsValueSelectedCorrect}" />
+
+                <Grid Width="200" Height="200" Background="{DynamicResource SystemRegionBrush}" Margin="10">
+                    <TextBlock Text="{Binding Value}" FontSize="72" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </Panel>
+        </DataTemplate>
+    </Window.DataTemplates>
+    
+        
+</Window>

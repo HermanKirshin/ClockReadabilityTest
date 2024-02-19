@@ -1,0 +1,80 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Speed" xml:space="preserve">
+        <value>Скорость</value>
+    </data>
+    <data name="Time" xml:space="preserve">
+        <value>Время</value>
+    </data>
+    <data name="TestType" xml:space="preserve">
+        <value>Тип индикатора:</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Этот тест проверяет время реакции на различные типы индикаторов. После нажатия 'Начать тест' на экране отображаются значения в виде текста. Внимательно их прочитав следует нажать кнопку 'Я готов(а)'. Затем после отсчета требуется выбирать правильное значение из нескольких как можно быстрее. Если настройка 'Кол-во вариантов' равна 1, то требуется определить корректно ли отображаемое значение.</value>
+    </data>
+    <data name="Start" xml:space="preserve">
+        <value>Начать тест</value>
+    </data>
+    <data name="ResultAnalog" xml:space="preserve">
+        <value>Среднее время реакции на аналоговый индикатор {0} мс</value>
+    </data>
+    <data name="Countdown" xml:space="preserve">
+        <value>{0}...</value>
+    </data>
+    <data name="Stop" xml:space="preserve">
+        <value>Прервать тест</value>
+    </data>
+    <data name="Ready" xml:space="preserve">
+        <value>Я готов(а) (&lt;Пробел&gt;)</value>
+    </data>
+    <data name="KeyHint" xml:space="preserve">
+        <value>&lt;{0}&gt;</value>
+    </data>
+    <data name="Next" xml:space="preserve">
+        <value>Далее</value>
+    </data>
+    <data name="NumValues" xml:space="preserve">
+        <value>Кол-во вариантов:</value>
+    </data>
+    <data name="NumPairs" xml:space="preserve">
+        <value>Кол-во тестовых пар:</value>
+    </data>
+    <data name="CountdownSeconds" xml:space="preserve">
+        <value>Отсчет (секунды):</value>
+    </data>
+    <data name="ChooseHintMultiple" xml:space="preserve">
+        <value>Выберите правильное значение кнопками &lt;1&gt;-&lt;{0}&gt;</value>
+    </data>
+    <data name="ChooseHintSingle" xml:space="preserve">
+        <value>Нажмите &lt;1&gt; если показанное значение верно и &lt;2&gt; если нет</value>
+    </data>
+    <data name="SpeedTextFormat" xml:space="preserve">
+        <value> км/ч</value>
+    </data>
+    <data name="TimeTextFormat" xml:space="preserve">
+        <value> ч </value>
+    </data>
+    <data name="Round5" xml:space="preserve">
+        <value>Округлить до 5</value>
+    </data>
+    <data name="ResultDigital" xml:space="preserve">
+        <value>Среднее время реакции на цифровой индикатор {0} мс</value>
+    </data>
+    <data name="TimeTextFormat2" xml:space="preserve">
+        <value> м</value>
+    </data>
+    <data name="Zoom" xml:space="preserve">
+        <value>Размер индикатора</value>
+    </data>
+</root>
