@@ -162,21 +162,21 @@
                                                     <TranslateTransform>
                                                         <TranslateTransform.X>
                                                             <MultiBinding Converter="{a:HalfConverter MultiplyCos}">
-                                                                <Binding Path="#Canvas.Bounds.Width" />
+                                                                <Binding Path="$parent[Canvas].Bounds.Width" />
                                                                 <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
                                                                 <DynamicResource ResourceKey="DistanceMultiplier" />
                                                             </MultiBinding>
                                                         </TranslateTransform.X>
                                                         <TranslateTransform.Y>
                                                             <MultiBinding Converter="{a:HalfConverter MultiplySin}">
-                                                                <Binding Path="#Canvas.Bounds.Height" />
+                                                                <Binding Path="$parent[Canvas].Bounds.Height" />
                                                                 <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
                                                                 <DynamicResource ResourceKey="DistanceMultiplier" />
                                                             </MultiBinding>
                                                         </TranslateTransform.Y>
                                                     </TranslateTransform>
-                                                    <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
-                                                                        Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                                    <TranslateTransform X="{Binding $parent[Canvas].Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                                        Y="{Binding $parent[Canvas].Bounds.Height, Converter={a:HalfConverter Default}}"/>
                                                     <TranslateTransform X="{Binding #TextBlock.Bounds.Width, Converter={a:HalfConverter Inverted}}"
                                                                         Y="{Binding #TextBlock.Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
                                                 </TransformGroup>
@@ -267,21 +267,21 @@
                                                     <TranslateTransform>
                                                         <TranslateTransform.X>
                                                             <MultiBinding Converter="{a:HalfConverter MultiplyCos}">
-                                                                <Binding Path="#Canvas.Bounds.Width" />
+                                                                <Binding Path="$parent[Canvas].Bounds.Width" />
                                                                 <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
                                                                 <DynamicResource ResourceKey="DistanceMultiplier" />
                                                             </MultiBinding>
                                                         </TranslateTransform.X>
                                                         <TranslateTransform.Y>
                                                             <MultiBinding Converter="{a:HalfConverter MultiplySin}">
-                                                                <Binding Path="#Canvas.Bounds.Height" />
+                                                                <Binding Path="$parent[Canvas].Bounds.Height" />
                                                                 <Binding Path="#TextBlock.(a:HalfConverter.Angle)" />
                                                                 <DynamicResource ResourceKey="DistanceMultiplier" />
                                                             </MultiBinding>
                                                         </TranslateTransform.Y>
                                                     </TranslateTransform>
-                                                    <TranslateTransform X="{Binding #Canvas.Bounds.Width, Converter={a:HalfConverter Default}}"
-                                                                        Y="{Binding #Canvas.Bounds.Height, Converter={a:HalfConverter Default}}"/>
+                                                    <TranslateTransform X="{Binding $parent[Canvas].Bounds.Width, Converter={a:HalfConverter Default}}"
+                                                                        Y="{Binding $parent[Canvas].Bounds.Height, Converter={a:HalfConverter Default}}"/>
                                                     <TranslateTransform X="{Binding #TextBlock.Bounds.Width, Converter={a:HalfConverter Inverted}}"
                                                                         Y="{Binding #TextBlock.Bounds.Height, Converter={a:HalfConverter Inverted}}"/>
                                                 </TransformGroup>

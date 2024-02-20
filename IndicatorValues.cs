@@ -5,157 +5,95 @@ using System.Runtime.CompilerServices;
 
 namespace ClockReadabilityTest;
 
-public class IncorrectAnalogTime : AnalogTime
+public class IncorrectAnalogTime(int hour, int minute, int incorrectHour, int incorrectMinute)
+    : AnalogTime(hour, minute)
 {
-    private readonly int _incorrectHour;
-    private readonly int _incorrectMinute;
-    
     public override bool IsExpected => false;
 
-    public IncorrectAnalogTime(int hour, int minute, int incorrectHour, int incorrectMinute) : base(hour, minute)
-    {
-        _incorrectHour = incorrectHour;
-        _incorrectMinute = incorrectMinute;
-    }
-
-    public override string Text1 => NumberToWords.Convert(_incorrectHour);
-    public override string Text2 => NumberToWords.Convert(_incorrectMinute);
+    public override string Text1 => NumberToWords.Convert(incorrectHour);
+    public override string Text2 => NumberToWords.Convert(incorrectMinute);
 }
 
-public class IncorrectDigitalTime : DigitalTime
+public class IncorrectDigitalTime(int hour, int minute, int incorrectHour, int incorrectMinute)
+    : DigitalTime(hour, minute)
 {
-    private readonly int _incorrectHour;
-    private readonly int _incorrectMinute;
-    
     public override bool IsExpected => false;
-    
-    public IncorrectDigitalTime(int hour, int minute, int incorrectHour, int incorrectMinute) : base(hour, minute)
-    {
-        _incorrectHour = incorrectHour;
-        _incorrectMinute = incorrectMinute;
-    }
 
-    public override string Text1 => NumberToWords.Convert(_incorrectHour);
-    public override string Text2 => NumberToWords.Convert(_incorrectMinute);
+    public override string Text1 => NumberToWords.Convert(incorrectHour);
+    public override string Text2 => NumberToWords.Convert(incorrectMinute);
 }
 
-public class IncorrectAnalogSpeed : AnalogSpeed
+public class IncorrectAnalogSpeed(int value, int incorrectValue) : AnalogSpeed(value)
 {
-    private readonly int _incorrectValue;
-    
     public override bool IsExpected => false;
-    
-    public IncorrectAnalogSpeed(int value, int incorrectValue) : base(value)
-    {
-        _incorrectValue = incorrectValue;
-    }
 
-    public override string Text1 => NumberToWords.Convert(_incorrectValue);
+    public override string Text1 => NumberToWords.Convert(incorrectValue);
     public override string Text2 => string.Empty;
 }
 
-public class IncorrectDigitalSpeed : DigitalSpeed
+public class IncorrectDigitalSpeed(int value, int incorrectValue) : DigitalSpeed(value)
 {
-    private readonly int _incorrectValue;
-    
     public override bool IsExpected => false;
-    
-    public IncorrectDigitalSpeed(int value, int incorrectValue) : base(value)
-    {
-        _incorrectValue = incorrectValue;
-    }
 
-    public override string Text1 => NumberToWords.Convert(_incorrectValue);
+    public override string Text1 => NumberToWords.Convert(incorrectValue);
     public override string Text2 => string.Empty;
 }
 
 
-public class AnalogTime : BaseValue
+public class AnalogTime(int hour, int minute) : BaseValue
 {
-    private readonly int _hour;
-    private readonly int _minute;
-    
     public override bool IsAnalog => true;
     
     public int HourAngle
     {
         get;
-    }
-    
+    } = hour * 30;
+
     public int MinuteAngle
     {
         get;
-    }
+    } = minute * 6;
 
-    public AnalogTime(int hour, int minute)
-    {
-        _hour = hour;
-        _minute = minute;
-        HourAngle = hour * 30;
-        MinuteAngle = minute * 6;
-    }
-
-    public override string Text1 => NumberToWords.Convert(_hour);
-    public override string Text2 => NumberToWords.Convert(_minute);
+    public override string Text1 => NumberToWords.Convert(hour);
+    public override string Text2 => NumberToWords.Convert(minute);
 }
 
-public class DigitalTime : BaseValue
+public class DigitalTime(int hour, int minute) : BaseValue
 {
-    private readonly int _hour;
-    private readonly int _minute;
-    
     public override bool IsAnalog => false;
     
     public string TimeString
     {
         get;
-    }
+    } = $"{hour}:{minute:00}";
 
-    public DigitalTime(int hour, int minute)
-    {
-        _hour = hour;
-        _minute = minute;
-        TimeString = $"{hour}:{minute:00}";
-    }
-
-    public override string Text1 => NumberToWords.Convert(_hour);
-    public override string Text2 => NumberToWords.Convert(_minute);
+    public override string Text1 => NumberToWords.Convert(hour);
+    public override string Text2 => NumberToWords.Convert(minute);
 }
 
-public class AnalogSpeed : BaseValue
+public class AnalogSpeed(int value) : BaseValue
 {
-    private readonly int _value;
+    private readonly int _value = value;
 
     public override bool IsAnalog => true;
     
     public int Angle
     {
         get;
-    }
-
-    public AnalogSpeed(int value)
-    {
-        Angle = value;
-        _value = value;
-    }
+    } = value;
 
     public override string Text1 => NumberToWords.Convert(_value);
     public override string Text2 => string.Empty;
 }
 
-public class DigitalSpeed : BaseValue
+public class DigitalSpeed(int value) : BaseValue
 {
     public override bool IsAnalog => false;
 
     public int Value
     {
         get;
-    }
-
-    public DigitalSpeed(int value)
-    {
-        Value = value;
-    }
+    } = value;
 
     public override string Text1 => NumberToWords.Convert(Value);
     public override string Text2 => string.Empty;

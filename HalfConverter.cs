@@ -57,7 +57,7 @@ public class HalfConverter(Calculation calculation) : MarkupExtension, IMultiVal
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
 }

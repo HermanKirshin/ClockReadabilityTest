@@ -1,6 +1,5 @@
 using System.Globalization;
 using Avalonia;
-using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 
@@ -23,17 +22,14 @@ public partial class MainWindow : Window
         set => SetValue(DataProperty, value);
     }
     
-    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs _)
     {
-        switch (((ComboBox)sender).SelectedIndex)
+        CultureInfo.CurrentUICulture = ((ComboBox)sender!).SelectedIndex switch
         {
-            case 0:
-                CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("EN-us");
-                break;
-            case 1:
-                CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("RU-ru");
-                break;
-        }
+            0 => CultureInfo.GetCultureInfo("EN-us"),
+            1 => CultureInfo.GetCultureInfo("RU-ru"),
+            _ => CultureInfo.CurrentUICulture
+        };
         Set();
     }
 

@@ -330,7 +330,7 @@ public sealed class ViewModel : INotifyPropertyChanged, IDisposable
         }
     }
 
-    public static int GetMedian(List<TimeSpan> source)
+    private static int GetMedian(List<TimeSpan> source)
     {
         source.Sort();
  
