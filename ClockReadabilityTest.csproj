@@ -5,10 +5,21 @@
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
-        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+
+        <PublishTrimmed>true</PublishTrimmed>
+        <PublishAot>true</PublishAot>
+        <IsTrimmable>true</IsTrimmable>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+        <EnableAotAnalyzer>true</EnableAotAnalyzer>
+        <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+        <TrimmerSingleWarn>false</TrimmerSingleWarn>
     </PropertyGroup>
-
-
+    <!-- Uncomment in case getting an error during publishing for osx-x64 -->
+    <!--    <ItemGroup>-->
+    <!--        <LinkerArg Include="-Wl,-ld_classic" />-->
+    <!--    </ItemGroup>-->
+    
     <ItemGroup>
 
         <PackageReference Include="Avalonia.Desktop" Version="11.0.6"/>
